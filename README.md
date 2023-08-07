@@ -6,7 +6,7 @@ How to install, import, and use the code to create dice, play a game, and analyz
 
 ### Installation:
 
-In your terminal or directly in python, run the following line of code to install the module:
+Download the montecarlo folder and setpup.py file to your computer. Then, in terminal, navigate to the folder you saved these two items and them run the following line of code to install the module:
 
 ```pip install -e . ```
 
