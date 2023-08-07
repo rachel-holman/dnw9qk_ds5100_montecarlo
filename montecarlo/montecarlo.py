@@ -4,7 +4,7 @@ import random
 
 class Die:
     """
-    Allows user to create a die, specify side-weights, randomly roll
+    Allows user to create a die, specify side-weights, randomly rollcu
     the die, and view the die.
     """
     
@@ -14,6 +14,12 @@ class Die:
         given by the user. Defaults to a 6-sided standard die with 
         face values 1-6 each with equal weight 1.0. The faces must 
         be distinct strings or numbers or the same data type.
+        
+        Parameters: 
+        faces - Numpy Array of strings or numbers
+        
+        Returns:
+        N/A
         """
         if len(set(faces)) != len(faces):
             raise ValueError("Face values must be distinct")
@@ -34,6 +40,13 @@ class Die:
         of the dice. Takes a valid side from die and a weight value that
         is either an integer, float, or value that can be cast as an 
         integer.
+        
+        Parameters: 
+        side - string or number value in the Die face array
+        weight - numeric value
+        
+        Returns:
+        N/A
         """
         if side not in self.faces:
             raise IndexError("Face value must be in the die array")
@@ -50,6 +63,12 @@ class Die:
         Takes a random sample with replacement from the private die
         data frame and applies the weight values. Returns a list of
         outcomes. Only one roll by default.
+        
+        Parameters: 
+        rolls - integer value
+        
+        Returns:
+        list of random outcomes for each roll
         """
         rolled = random.choices(self._die.index, 
                                 weights=self._die.weight, 
@@ -59,6 +78,12 @@ class Die:
     def current_state(self):
         """
         Returns a copy of the private die data frame
+        
+        Parameters: 
+        N/A
+        
+        Returns:
+        copy of data frame
         """
         return self._die.copy()
 
@@ -74,6 +99,12 @@ class Game:
         Initialized a list of similar dice.
         We assume the dice in the list each have the same number of sides
         and associated faces, but each may have their own weights. 
+        
+        Parameters: 
+        dice - list of Die objects
+        
+        Returns:
+        N/A
         """
         self.dice = dice
         
@@ -84,6 +115,12 @@ class Game:
         the output in a private wide-form table with roll number as a 
         named index, columns for each die number (using its list index 
         as column name), and the face rolled in the instance in each cell
+        
+        Parameters: 
+        rolls - integer value
+        
+        Returns:
+        N/A
         """
         self._game = pd.DataFrame({'roll': np.arange(1,rolls+1)})
         self._game = self._game.set_index('roll')
@@ -104,6 +141,12 @@ class Game:
         A ValueError is raised if the user enters an invalid viewing option.
         Narrow form will have a MultiIndex comprising of roll number and 
         die number (in this order) and a single column with faces roled.
+        
+        Parameters: 
+        form - string value of either "wide" or "narrow"
+        
+        Returns:
+        either a wide or narrow data frame
         """
         if not (form.lower() == 'wide' or form.lower() == 'narrow'):
             raise ValueError("Invalid option for narrow or wide output")
@@ -134,6 +177,12 @@ class Analyzer:
         """
         Initializes the game value so long as it is an instance of 
         the Game object
+        
+        Parameters: 
+        game - Game object of game that has been played 
+        
+        Returns:
+        N/A
         """
         if not isinstance(game, Game):
             raise ValueError("Input must be a Game object")
@@ -146,6 +195,12 @@ class Analyzer:
         A jackpot is a result in which all faces are the same for one roll.
         This method computes and returns the total number of jackpots 
         in the game.
+        
+        Parameters: 
+        N/A
+        
+        Returns:
+        total number of jackpots
         """
         jack = np.transpose(self.game.show_results())
         
@@ -161,6 +216,12 @@ class Analyzer:
         This method computes the number of times a given face is rolled
         in each roll event and returns a data frame with an index of
         roll number, face values as columns, and count values in the cells.
+        
+        Parameters: 
+        N/A
+        
+        Returns:
+        data frame with roll number, face values, and count values
         """
         base = pd.DataFrame({'roll': self.game.show_results().index})
         base = base.set_index('roll')
@@ -186,6 +247,12 @@ class Analyzer:
         counts. Combinations are order-independent and may contain repetitions.
         Returns a dataframe with a MultiIndex of distinct combinations 
         and a column for associated counts
+        
+        Parameters: 
+        N/A
+        
+        Returns:
+        data frame with distinct combinations and counts
         """
         df = self.game.show_results('wide')
         
@@ -200,6 +267,12 @@ class Analyzer:
         counts. Permutations are order-dependent and may contain repetitions.
         Returns a dataframe with a MultiIndex of distinct permutations 
         and a column for associated counts
+        
+        Parameters: 
+        N/A
+        
+        Returns:
+        data frame with distinct permutations and counts
         """
         perm = self.game.show_results('wide').value_counts(sort=False)\
                 .to_frame().rename({0:'count'},axis=1)
